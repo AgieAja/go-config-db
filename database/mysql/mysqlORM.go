@@ -12,14 +12,8 @@ var (
 	ormErr   error
 )
 
-//InitConnMySQLORM - preparation connection database mysql
-func InitConnMySQLORM() {
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASS")
-	dbName := os.Getenv("DB_SCHEMA")
-
+//InitConnMySQLORM - preparation connection database mysql ORM
+func InitConnMySQLORM(dbHost,dbPort,dbUser,dbPass,dbName string) {
 	desc := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
 
 	mySQLORM, ormErr = createConnMySQLORM(desc)
