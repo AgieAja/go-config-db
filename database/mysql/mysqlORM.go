@@ -2,7 +2,6 @@ package mysql
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/jinzhu/gorm"
 )
