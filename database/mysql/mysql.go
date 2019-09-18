@@ -17,13 +17,7 @@ var (
 )
 
 //InitConnMySQLDB - preparetion connection database mysql
-func InitConnMySQLDB() {
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASS")
-	dbName := os.Getenv("DB_SCHEMA")
-
+func InitConnMySQLDB(dbHost,dbPort,dbUser,dbPass,dbName string) {
 	desc := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
 
 	mysqldb, sqlErr = createConnMySQL(desc)
