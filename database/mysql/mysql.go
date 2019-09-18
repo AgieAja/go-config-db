@@ -5,7 +5,6 @@ import (
 	"net/url"
 
 	"fmt"
-	"os"
 
 	//driver mysql database
 	_ "github.com/go-sql-driver/mysql"
