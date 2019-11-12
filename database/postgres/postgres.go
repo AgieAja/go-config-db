@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"database/sql"
 	"fmt"
 	"net/url"
 
@@ -10,8 +11,9 @@ import (
 )
 
 var (
-	sqlDbORM  *gorm.DB
-	sqlORMErr error
+	sqlDbORM          *gorm.DB
+	sqlORMErr, sqlErr error
+	sqlDb             *sql.DB
 )
 
 //createConnPostgresORM - create connection database postgresSQL
@@ -35,14 +37,47 @@ func createConnPostgresORM(desc string) (*gorm.DB, error) {
 	return sqlDbORM, nil
 }
 
-//InitConnPostgresSQLDBORM - preparetion connection database postgresSQL
+//createConnPostgres - create connection database postgresSQL
+func createConnPostgres(desc string) (*sql.DB, error) {
+	val := url.Values{}
+	val.Add("loc", "Asia/Jakarta")
+	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
+	sqlDb, err := sql.Open(`postgres`, dsn)
+	if err != nil {
+		return nil, err
+	}
+
+	err = sqlDb.Ping()
+	if err != nil {
+		return nil, err
+	}
+
+	sqlDb.SetMaxIdleConns(10)
+	sqlDb.SetMaxOpenConns(10)
+
+	return sqlDb, nil
+}
+
+//InitConnPostgresSQLDBORM - preparetion connection database postgresSQL ORM
 func InitConnPostgresSQLDBORM(dbHost, dbUser, dbPass, dbName string) {
 	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbUser, dbPass, dbName)
 
 	sqlDbORM, sqlORMErr = createConnPostgresORM(desc)
 }
 
-//GetPostgresSQLDBORM - get connection db postgres
+//InitConnPostgresSQLDB - preparetion connection database postgresSQL ORM
+func InitConnPostgresSQLDB(dbHost, dbUser, dbPass, dbName string) {
+	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbUser, dbPass, dbName)
+
+	sqlDb, sqlErr = createConnPostgres(desc)
+}
+
+//GetPostgresSQLDBORM - get connection db postgres ORM
 func GetPostgresSQLDBORM() (*gorm.DB, error) {
 	return sqlDbORM, sqlORMErr
+}
+
+//GetPostgresSQLDB - get connection db postgres
+func GetPostgresSQLDB() (*sql.DB, error) {
+	return sqlDb, sqlErr
 }
