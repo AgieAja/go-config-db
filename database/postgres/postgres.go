@@ -3,7 +3,6 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"net/url"
 
 	"github.com/jinzhu/gorm"
 	//dont delete this package..driver for connection postgreSQL
@@ -18,10 +17,10 @@ var (
 
 //createConnPostgresORM - create connection database postgresSQL
 func createConnPostgresORM(desc string) (*gorm.DB, error) {
-	val := url.Values{}
-	val.Add("TimeZone", "Asia/Jakarta")
-	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
-	sqlDbORM, err := gorm.Open(`postgres`, dsn)
+	// val := url.Values{}
+	// val.Add("TimeZone", "Asia/Jakarta")
+	// dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
+	sqlDbORM, err := gorm.Open(`postgres`, desc)
 	if err != nil {
 		return nil, err
 	}
@@ -39,10 +38,10 @@ func createConnPostgresORM(desc string) (*gorm.DB, error) {
 
 //createConnPostgres - create connection database postgresSQL
 func createConnPostgres(desc string) (*sql.DB, error) {
-	val := url.Values{}
-	val.Add("TimeZone", "Asia/Jakarta")
-	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
-	sqlDb, err := sql.Open(`postgres`, dsn)
+	// val := url.Values{}
+	// val.Add("TimeZone", "Asia/Jakarta")
+	// dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
+	sqlDb, err := sql.Open(`postgres`, desc)
 	if err != nil {
 		return nil, err
 	}
@@ -60,14 +59,14 @@ func createConnPostgres(desc string) (*sql.DB, error) {
 
 //InitConnPostgresSQLDBORM - preparetion connection database postgresSQL ORM
 func InitConnPostgresSQLDBORM(dbHost, dbUser, dbPass, dbName string) {
-	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbUser, dbPass, dbName)
+	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPass, dbName)
 
 	sqlDbORM, sqlORMErr = createConnPostgresORM(desc)
 }
 
 //InitConnPostgresSQLDB - preparetion connection database postgresSQL ORM
 func InitConnPostgresSQLDB(dbHost, dbUser, dbPass, dbName string) {
-	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbUser, dbPass, dbName)
+	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta", dbHost, dbUser, dbPass, dbName)
 
 	sqlDb, sqlErr = createConnPostgres(desc)
 }
