@@ -35,8 +35,8 @@ func createConnPostgresORM(desc string) (*gorm.DB, error) {
 }
 
 //InitConnPostgresSQLDBORM - preparetion connection database postgresSQL
-func InitConnPostgresSQLDBORM(dbHost, dbPort, dbUser, dbPass, dbName string) {
-	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbName)
+func InitConnPostgresSQLDBORM(dbHost, dbUser, dbPass, dbName string) {
+	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable", dbHost, dbUser, dbPass, dbName)
 
 	sqlDbORM, sqlORMErr = createConnPostgresORM(desc)
 }
