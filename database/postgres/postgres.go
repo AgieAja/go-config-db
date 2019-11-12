@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/jinzhu/gorm"
 	//dont delete this package..driver for connection postgreSQL
@@ -15,10 +16,10 @@ var (
 
 //createConnPostgresORM - create connection database postgresSQL
 func createConnPostgresORM(desc string) (*gorm.DB, error) {
-	// val := url.Values{}
-	// val.Add("loc", "Asia/Jakarta")
-	// dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
-	sqlDbORM, err := gorm.Open(`postgres`, desc)
+	val := url.Values{}
+	val.Add("loc", "Asia/Jakarta")
+	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
+	sqlDbORM, err := gorm.Open(`postgres`, dsn)
 	if err != nil {
 		return nil, err
 	}
