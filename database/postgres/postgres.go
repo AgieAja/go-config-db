@@ -19,7 +19,7 @@ var (
 //createConnPostgresORM - create connection database postgresSQL
 func createConnPostgresORM(desc string) (*gorm.DB, error) {
 	val := url.Values{}
-	val.Add("loc", "Asia/Jakarta")
+	val.Add("TimeZone", "Asia/Jakarta")
 	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
 	sqlDbORM, err := gorm.Open(`postgres`, dsn)
 	if err != nil {
@@ -40,7 +40,7 @@ func createConnPostgresORM(desc string) (*gorm.DB, error) {
 //createConnPostgres - create connection database postgresSQL
 func createConnPostgres(desc string) (*sql.DB, error) {
 	val := url.Values{}
-	val.Add("loc", "Asia/Jakarta")
+	val.Add("TimeZone", "Asia/Jakarta")
 	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
 	sqlDb, err := sql.Open(`postgres`, dsn)
 	if err != nil {
