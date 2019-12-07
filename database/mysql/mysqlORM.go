@@ -12,10 +12,10 @@ var (
 )
 
 //InitConnMySQLORM - preparation connection database mysql ORM
-func InitConnMySQLORM(dbHost,dbPort,dbUser,dbPass,dbName string) {
+func InitConnMySQLORM(dbHost, dbPort, dbUser, dbPass, dbName string, maxIdle, maxConn int) {
 	desc := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
 
-	mySQLORM, ormErr = createConnMySQLORM(desc)
+	mySQLORM, ormErr = createConnMySQLORM(desc, maxIdle, maxConn)
 }
 
 //GetMySQLORM - get connection ORM db mysql
@@ -24,7 +24,7 @@ func GetMySQLORM() (*gorm.DB, error) {
 }
 
 //createConnMySQLORM - create connection ORM database mysql
-func createConnMySQLORM(desc string) (*gorm.DB, error) {
+func createConnMySQLORM(desc string, maxIdle, maxConn int) (*gorm.DB, error) {
 	mySQLORM, ormErr = gorm.Open(`mysql`, desc)
 	if ormErr != nil {
 		return nil, ormErr
@@ -35,7 +35,7 @@ func createConnMySQLORM(desc string) (*gorm.DB, error) {
 		return nil, ormErr
 	}
 
-	mySQLORM.DB().SetMaxIdleConns(10)
-	mySQLORM.DB().SetMaxOpenConns(10)
+	mySQLORM.DB().SetMaxIdleConns(maxIdle)
+	mySQLORM.DB().SetMaxOpenConns(maxConn)
 	return mySQLORM, nil
 }

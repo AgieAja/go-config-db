@@ -15,11 +15,11 @@ var (
 	sqlErr  error
 )
 
-//InitConnMySQLDB - preparetion connection database mysql
-func InitConnMySQLDB(dbHost,dbPort,dbUser,dbPass,dbName string) {
+//InitConnMySQLDB - preparation connection database mysql
+func InitConnMySQLDB(dbHost, dbPort, dbUser, dbPass, dbName string, maxIdle, maxConn int) {
 	desc := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPass, dbHost, dbPort, dbName)
 
-	mysqldb, sqlErr = createConnMySQL(desc)
+	mysqldb, sqlErr = createConnMySQL(desc, maxIdle, maxConn)
 }
 
 //GetMySQLDB - get connection db mysql
@@ -28,7 +28,7 @@ func GetMySQLDB() (*sql.DB, error) {
 }
 
 //createConnMySQL - create connection database mysql
-func createConnMySQL(desc string) (*sql.DB, error) {
+func createConnMySQL(desc string, maxIdle, maxConn int) (*sql.DB, error) {
 	val := url.Values{}
 	val.Add("loc", "Asia/Jakarta")
 	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
@@ -42,8 +42,8 @@ func createConnMySQL(desc string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	mysqldb.SetMaxIdleConns(10)
-	mysqldb.SetMaxOpenConns(10)
+	mysqldb.SetMaxIdleConns(maxIdle)
+	mysqldb.SetMaxOpenConns(maxConn)
 
 	return mysqldb, nil
 }
