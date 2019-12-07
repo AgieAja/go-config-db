@@ -16,7 +16,7 @@ var (
 )
 
 //createConnPostgresORM - create connection database postgresSQL
-func createConnPostgresORM(desc string) (*gorm.DB, error) {
+func createConnPostgresORM(desc string, maxIdle, maxConn int) (*gorm.DB, error) {
 	// val := url.Values{}
 	// val.Add("TimeZone", "Asia/Jakarta")
 	// dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
@@ -30,14 +30,14 @@ func createConnPostgresORM(desc string) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	sqlDbORM.DB().SetMaxIdleConns(10)
-	sqlDbORM.DB().SetMaxOpenConns(10)
+	sqlDbORM.DB().SetMaxIdleConns(maxIdle)
+	sqlDbORM.DB().SetMaxOpenConns(maxConn)
 
 	return sqlDbORM, nil
 }
 
 //createConnPostgres - create connection database postgresSQL
-func createConnPostgres(desc string) (*sql.DB, error) {
+func createConnPostgres(desc string, maxIdle, maxConn int) (*sql.DB, error) {
 	// val := url.Values{}
 	// val.Add("TimeZone", "Asia/Jakarta")
 	// dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
@@ -51,24 +51,24 @@ func createConnPostgres(desc string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	sqlDb.SetMaxIdleConns(10)
-	sqlDb.SetMaxOpenConns(10)
+	sqlDb.SetMaxIdleConns(maxIdle)
+	sqlDb.SetMaxOpenConns(maxConn)
 
 	return sqlDb, nil
 }
 
-//InitConnPostgresSQLDBORM - preparetion connection database postgresSQL ORM
-func InitConnPostgresSQLDBORM(dbHost, dbUser, dbPass, dbName, dbTimeZone string) {
+//InitConnPostgresSQLDBORM - preparation connection database postgresSQL ORM
+func InitConnPostgresSQLDBORM(dbHost, dbUser, dbPass, dbName, dbTimeZone string, maxIdle, maxConn int) {
 	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=%s", dbHost, dbUser, dbPass, dbName, dbTimeZone)
 
-	sqlDbORM, sqlORMErr = createConnPostgresORM(desc)
+	sqlDbORM, sqlORMErr = createConnPostgresORM(desc, maxIdle, maxConn)
 }
 
-//InitConnPostgresSQLDB - preparetion connection database postgresSQL ORM
-func InitConnPostgresSQLDB(dbHost, dbUser, dbPass, dbName, dbTimeZone string) {
+//InitConnPostgresSQLDB - preparation connection database postgresSQL ORM
+func InitConnPostgresSQLDB(dbHost, dbUser, dbPass, dbName, dbTimeZone string, maxIdle, maxConn int) {
 	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=%s", dbHost, dbUser, dbPass, dbName, dbTimeZone)
 
-	sqlDb, sqlErr = createConnPostgres(desc)
+	sqlDb, sqlErr = createConnPostgres(desc, maxIdle, maxConn)
 }
 
 //GetPostgresSQLDBORM - get connection db postgres ORM
