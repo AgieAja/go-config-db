@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/jinzhu/gorm"
 )
@@ -25,7 +26,10 @@ func GetMySQLORM() (*gorm.DB, error) {
 
 //createConnMySQLORM - create connection ORM database mysql
 func createConnMySQLORM(desc string, maxIdle, maxConn int) (*gorm.DB, error) {
-	mySQLORM, ormErr = gorm.Open(`mysql`, desc)
+	val := url.Values{}
+	val.Add("loc", "Asia/Jakarta")
+	dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
+	mySQLORM, ormErr = gorm.Open(`mysql`, dsn)
 	if ormErr != nil {
 		return nil, ormErr
 	}
