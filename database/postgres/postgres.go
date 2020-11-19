@@ -58,15 +58,17 @@ func createConnPostgres(desc string, maxIdle, maxConn int) (*sql.DB, error) {
 }
 
 //InitConnPostgresSQLDBORM - preparation connection database postgresSQL ORM
-func InitConnPostgresSQLDBORM(dbHost, dbUser, dbPass, dbName, dbTimeZone string, maxIdle, maxConn int) {
-	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=%s", dbHost, dbUser, dbPass, dbName, dbTimeZone)
+func InitConnPostgresSQLDBORM(dbHost, dbUser, dbPass, dbName,dbPort,dbSSL, dbTimeZone string, maxIdle, maxConn int) {
+	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s", dbHost, dbUser, dbPass,
+		dbName,dbPort,dbSSL, dbTimeZone)
 
 	sqlDbORM, sqlORMErr = createConnPostgresORM(desc, maxIdle, maxConn)
 }
 
 //InitConnPostgresSQLDB - preparation connection database postgresSQL ORM
-func InitConnPostgresSQLDB(dbHost, dbUser, dbPass, dbName, dbTimeZone string, maxIdle, maxConn int) {
-	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=%s", dbHost, dbUser, dbPass, dbName, dbTimeZone)
+func InitConnPostgresSQLDB(dbHost, dbUser, dbPass, dbName,dbPort,dbSSL, dbTimeZone string, maxIdle, maxConn int) {
+	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s", dbHost, dbUser, dbPass,
+		dbName,dbPort,dbSSL, dbTimeZone)
 
 	sqlDb, sqlErr = createConnPostgres(desc, maxIdle, maxConn)
 }
