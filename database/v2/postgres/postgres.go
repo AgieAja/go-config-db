@@ -11,11 +11,11 @@ import (
 var SqlDb *sql.DB
 
 //ConnPostgres - create connection database postgresSQL
-func ConnPostgres(dbHost, dbUser, dbPass, dbName, dbTimeZone string, maxIdle, maxConn int) (*sql.DB, error) {
+func ConnPostgres(dbHost, dbUser, dbPass, dbName,dbPort,dbSSL, dbTimeZone string, maxIdle, maxConn int) (*sql.DB, error) {
 	// val := url.Values{}
 	// val.Add("TimeZone", "Asia/Jakarta")
 	// dsn := fmt.Sprintf("%s&%s", desc, val.Encode())
-	desc := getConnectionString(dbHost, dbUser, dbPass, dbName, dbTimeZone)
+	desc := getConnectionString(dbHost, dbUser, dbPass, dbName,dbPort,dbSSL, dbTimeZone)
 	sqlDb, err := sql.Open(`postgres`, desc)
 	if err != nil {
 		return nil, err
@@ -34,8 +34,9 @@ func ConnPostgres(dbHost, dbUser, dbPass, dbName, dbTimeZone string, maxIdle, ma
 }
 
 //getConnectionString - preparation connection database postgresSQL
-func getConnectionString(dbHost, dbUser, dbPass, dbName, dbTimeZone string) string {
-	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=%s", dbHost, dbUser, dbPass, dbName, dbTimeZone)
+func getConnectionString(dbHost, dbUser, dbPass, dbName,dbPort,dbSSL, dbTimeZone string) string {
+	desc := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s", dbHost, dbUser,
+		dbPass, dbName,dbPort,dbSSL, dbTimeZone)
 
 	return desc
 }
